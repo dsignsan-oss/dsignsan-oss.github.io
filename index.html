@@ -440,6 +440,62 @@ footer{border-top:1px solid var(--line);padding-block:clamp(56px,8vw,110px) calc
 @media (hover:hover) and (pointer:fine){.cursor{display:block}}
 
 
+
+/* mentorías: despliegue al elegir */
+.mode .pick{justify-self:start;display:inline-flex;align-items:center;margin-top:4px;padding:7px 12px;border:1px solid #ffffff38;border-radius:999px;font-size:11px;color:var(--bone);background:#ffffff0a;transition:background .25s,color .25s,border-color .25s}
+.mode .pick i,.mode .pick em{font-style:normal}
+.mode .pick em{display:none}
+.mode:hover .pick{border-color:var(--mint)}
+.mode:has(input:checked) .pick{background:var(--mint);color:#07070a;border-color:var(--mint)}
+.mode:has(input:checked) .pick i{display:none}
+.mode:has(input:checked) .pick em{display:inline}
+.modes:not(:has(input:checked)) .pick{animation:pickPulse 2.6s ease-in-out infinite}
+@keyframes pickPulse{0%,100%{box-shadow:0 0 0 0 #7cf7e400}50%{box-shadow:0 0 0 5px #7cf7e426}}
+.modes-hint{margin:-14px 0 0;color:var(--mute)}
+.mflow{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .7s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.mflow-in{overflow:hidden;min-height:0}
+.mflow.open{grid-template-rows:1fr;opacity:1}
+.mflow.done .mflow-in{overflow:visible}
+.mflow.open .mflow-in{padding-top:2px}
+@media (max-width:640px){
+  section{padding-block:56px}
+  /* qué hago: acordeón */
+  .services{gap:8px}
+  .svc{grid-template-columns:34px minmax(0,1fr) 20px;align-items:center;gap:8px 12px;padding:12px 14px;cursor:pointer;border-radius:14px}
+  .svc:hover{transform:none}
+  .svc-ico{width:34px;height:34px;font-size:14px;border-radius:10px}
+  .svc-ico{grid-column:1;grid-row:1}
+  .svc h3{font-size:17px;grid-column:2;grid-row:1}
+  .svc::after{content:"+";grid-column:3;grid-row:1;justify-self:end;font-size:22px;font-weight:300;line-height:1;color:var(--mute);transition:transform .3s,color .3s}
+  .svc.open::after{transform:rotate(45deg);color:var(--bone)}
+  .svc p,.svc .tags{grid-column:1/-1}
+  .svc:not(.open) p,.svc:not(.open) .tags{display:none}
+  .svc.open{border-color:#ffffff40}
+  .svc-foot{margin-top:24px}
+  /* logos más compactos */
+  .logos{--lk:.6}
+  .logo{height:44px;padding-inline:16px}
+  .logo svg{height:28px}
+  .logo .wm{font-size:16px}.logo .wm.caps{font-size:12px}
+  .logos .band>.mono{padding-top:10px;font-size:10px}
+  .logos .viewport{padding-block:4px 8px}
+  /* galería más baja y tarjetas proporcionadas */
+  .wall{height:min(62vh,460px)}
+  .card h3{font-size:21px}
+  .card h3 .sub{font-size:24px}
+  .card .big{font-size:104px}
+  .card.type .word{font-size:60px}
+  .card.type .word.goth{font-size:72px}
+  .card .meta{left:12px;right:12px;bottom:12px}
+  .card .play{width:36px;height:36px;left:12px;top:12px}
+  .modes-hint{margin-top:-18px}
+  .steps{grid-template-columns:1fr 1fr;row-gap:0;margin-bottom:28px}
+  .steps li,.steps li+li{padding:14px 12px 14px 0;border-left:0;border-top:0}
+  .steps li:nth-child(even){padding-left:12px;border-left:1px solid var(--line)}
+  .steps li:nth-child(n+3){border-top:1px solid var(--line)}
+  .steps b{font-size:15px}
+  .steps p{font-size:12.5px;line-height:1.4}
+}
 /* responsive pass */
 @media (min-width:821px) and (max-width:1440px){.stage .layer{padding-bottom:88px}}
 @media (max-width:380px){
@@ -611,19 +667,24 @@ img,video{max-width:100%}
     </div>
 
     <div class="modes" role="radiogroup" aria-label="Modalidad">
-      <label class="mode"><input type="radio" name="mode" id="mode-individual" value="individual" checked>
+      <label class="mode"><input type="radio" name="mode" id="mode-individual" value="individual">
         <span class="mono">Para creativos y productores</span>
         <h3>Individual <span class="goth iri">1:1</span></h3>
         <p>Evaluamos qué necesitas, calculo el tiempo que hace falta y armamos una o más sesiones personalizadas, dirigidas solo a lo que tú necesitas. Paso a paso, con desarrollo 100% en vivo.</p>
         <div class="tags"><span>100% online</span><span>1 persona</span><span>En vivo</span></div>
+        <span class="pick mono" aria-hidden="true"><i>Elegir ↓</i><em>Elegida ✓</em></span>
       </label>
       <label class="mode"><input type="radio" name="mode" id="mode-grupal" value="grupal">
         <span class="mono">Para empresas, agencias y equipos</span>
         <h3>Grupal <span class="goth iri">in situ</span></h3>
         <p>Una mentoría presencial para tu equipo. Evalúo con el responsable lo que el equipo necesita y enseño exactamente eso, produciendo en vivo con ellos.</p>
         <div class="tags"><span>Presencial</span><span>5 a 10 personas</span><span>En vivo</span></div>
+        <span class="pick mono" aria-hidden="true"><i>Elegir ↓</i><em>Elegida ✓</em></span>
       </label>
     </div>
+    <p class="modes-hint mono" id="modesHint">Elige una modalidad para ver cómo funciona y escribirme</p>
+
+    <div class="mflow" id="mflow" inert><div class="mflow-in">
 
     <ol class="steps" aria-label="Cómo funciona">
       <li><span class="mono">01</span><b>Evaluación</b><p id="step1">Conversamos sobre tu proyecto, tu nivel y lo que quieres lograr.</p></li>
@@ -682,6 +743,7 @@ img,video{max-width:100%}
         </div>
       </div>
     </form>
+    </div></div>
   </section>
 </main>
 
@@ -1243,7 +1305,7 @@ function cardHTML(item, n){
 
   function layout(){
     const narrow = innerWidth < 640;
-    W = narrow ? 220 : 300; H = Math.round(W*4/3); G = narrow ? 12 : 18;
+    W = narrow ? 188 : 300; H = Math.round(W*4/3); G = narrow ? 12 : 18;
     CW = W + G; CH = H + G;
     cols = Math.ceil(wall.clientWidth / CW) + 2;
     rows = Math.ceil(wall.clientHeight / CH) + 3;
@@ -1382,16 +1444,27 @@ lb.addEventListener("close", () => { $("#lbScreen").innerHTML = ""; });
       evalP:"Me escribe quien coordina al equipo. Definimos objetivos y herramientas, calculo el tiempo y te paso la propuesta para la sesión presencial.",
       msg:"¿Qué necesita aprender el equipo?", ph:"Ej.: producir piezas de video para redes con IA, voces para spots…" }
   };
-  const getMode = () => document.querySelector("input[name=mode]:checked").value;
+  const getMode = () => { const r = document.querySelector("input[name=mode]:checked"); return r ? r.value : "individual"; };
   function applyMode(){
     const m = getMode(), c = COPY[m];
     form.classList.toggle("group", m === "grupal");
     $("#step1").textContent = c.step1; $("#evalTitle").textContent = c.evalT; $("#evalText").textContent = c.evalP;
     $("#msgLabel").textContent = c.msg; $("#f-msg").placeholder = c.ph;
   }
-  document.querySelectorAll("input[name=mode]").forEach(r => r.addEventListener("change", applyMode));
+  const mflow = $("#mflow");
+  function openFlow(){
+    if (mflow.classList.contains("open")) return;
+    mflow.classList.add("open"); mflow.inert = false; $("#modesHint").hidden = true;
+    mflow.addEventListener("transitionend", () => mflow.classList.add("done"), { once: true });
+    setTimeout(() => mflow.classList.add("done"), 900);
+    if (innerWidth < 860) setTimeout(() => {
+      const t = mflow.getBoundingClientRect().top + scrollY - innerHeight*0.3;
+      if (t > scrollY) scrollTo({ top: t, behavior: "smooth" });
+    }, 120);
+  }
+  document.querySelectorAll("input[name=mode]").forEach(r => r.addEventListener("change", () => { applyMode(); openFlow(); }));
   document.querySelectorAll("[data-mode]").forEach(a => a.addEventListener("click", () => {
-    const r = $("#mode-" + a.dataset.mode); r.checked = true; applyMode();
+    const r = $("#mode-" + a.dataset.mode); r.checked = true; applyMode(); openFlow();
   }));
   applyMode();
   let via = "mail";
@@ -1460,6 +1533,14 @@ document.addEventListener("click", e => {
   }, { passive:true });
   (function loop(){ cx += (x-cx)*.22; cy += (y-cy)*.22; cur.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
 })();
+
+/* Qué hago: acordeón en móvil */
+document.querySelectorAll(".svc").forEach(c => {
+  const h = c.querySelector("h3"); c.tabIndex = 0; c.setAttribute("role","button"); c.setAttribute("aria-expanded","false");
+  const t = () => { if (innerWidth > 640) return; const o = c.classList.toggle("open"); c.setAttribute("aria-expanded", o); };
+  c.addEventListener("click", t);
+  c.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); t(); } });
+});
 </script>
 </body>
 </html>
