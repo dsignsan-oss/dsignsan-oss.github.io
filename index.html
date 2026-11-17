@@ -1455,14 +1455,22 @@ lb.addEventListener("close", () => { $("#lbScreen").innerHTML = ""; });
   function openFlow(){
     if (mflow.classList.contains("open")) return;
     mflow.classList.add("open"); mflow.inert = false; $("#modesHint").hidden = true;
-    mflow.addEventListener("transitionend", () => mflow.classList.add("done"), { once: true });
-    setTimeout(() => mflow.classList.add("done"), 900);
+    clearTimeout(mflow._t); mflow._t = setTimeout(() => { if (mflow.classList.contains("open")) mflow.classList.add("done"); }, 750);
     if (innerWidth < 860) setTimeout(() => {
       const t = mflow.getBoundingClientRect().top + scrollY - innerHeight*0.3;
       if (t > scrollY) scrollTo({ top: t, behavior: "smooth" });
     }, 120);
   }
+  function closeFlow(){
+    clearTimeout(mflow._t); mflow.classList.remove("open", "done"); mflow.inert = true; $("#modesHint").hidden = false;
+  }
   document.querySelectorAll("input[name=mode]").forEach(r => r.addEventListener("change", () => { applyMode(); openFlow(); }));
+  /* tocar de nuevo la modalidad elegida la desmarca y pliega todo */
+  document.querySelectorAll("label.mode").forEach(l => {
+    const r = l.querySelector("input"); let was = false;
+    l.addEventListener("pointerdown", () => { was = r.checked; });
+    r.addEventListener("click", () => { if (was) { r.checked = false; closeFlow(); } was = false; });
+  });
   document.querySelectorAll("[data-mode]").forEach(a => a.addEventListener("click", () => {
     const r = $("#mode-" + a.dataset.mode); r.checked = true; applyMode(); openFlow();
   }));
